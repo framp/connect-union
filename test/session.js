@@ -1,5 +1,5 @@
 
-var connect = require('../')
+var connect = require('../union')
   , assert = require('assert');
 
 var min = 60 * 1000;

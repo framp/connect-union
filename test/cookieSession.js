@@ -1,5 +1,5 @@
 
-var connect = require('../');
+var connect = require('../union');
 
 function sess(res) {
   return res.headers['set-cookie'][0];
@@ -122,9 +122,9 @@ describe('connect.cookieSession()', function(){
   })
 
   describe('req.session.cookie', function(){
-    it('should be a Cookie', function(done){
+    it('should be a Object', function(done){
       app.use(function(req, res){
-        req.session.cookie.constructor.name.should.equal('Cookie');
+        req.session.cookie.constructor.name.should.equal('Object');
         res.end();
       });
 

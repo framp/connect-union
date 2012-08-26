@@ -1,133 +1,120 @@
-[![build status](https://secure.travis-ci.org/senchalabs/connect.png)](http://travis-ci.org/senchalabs/connect)
-# Connect
+# Connect - Union
 
-  Connect is an extensible HTTP server framework for [node](http://nodejs.org), providing high performance "plugins" known as _middleware_.
+This is a fork of [connect](http://github.com/senchalabs/connect) to test the compatibility of the latest connect plugins with [union](http://github.com/flatiron/union) middleware
 
- Connect is bundled with over _20_ commonly used middleware, including
- a logger, session support, cookie parser, and [more](http://senchalabs.github.com/connect). Be sure to view the 2.x [documentation](http://senchalabs.github.com/connect/).
+This has been already done by pksunkara with an older connect version: https://github.com/pksunkara/connect-union
+I've just followed his footsteps using Connect 2.4.4
 
-```js
-var connect = require('connect')
-  , http = require('http');
 
-var app = connect()
-  .use(connect.favicon())
-  .use(connect.logger('dev'))
-  .use(connect.static('public'))
-  .use(connect.directory('public'))
-  .use(connect.cookieParser())
-  .use(connect.session({ secret: 'my secret here' }))
-  .use(function(req, res){
-    res.end('Hello from Connect!\n');
-  });
+## Status
 
-http.createServer(app).listen(3000);
+  ✖ 7 of 164 tests failed:
+
+  1) connect.cookieSession() should reset on invalid parse:
+     TypeError: Cannot read property 'should' of undefined
+      at Array.app.use.req.session.cookie.path [as 2] (/home/framp/connect/test/cookieSession.js:102:27)                    
+      at dispatch (/home/framp/connect/node_modules/union/lib/routing-stream.js:119:21)                                     
+      at g (events.js:185:14)                                                                                               
+      at EventEmitter.emit (events.js:85:17)                                                                                
+      at RoutingStream.route (/home/framp/connect/node_modules/union/lib/routing-stream.js:114:23)                          
+      at Array.cookieSession [as 1] (/home/framp/connect/lib/middleware/cookieSession.js:116:5)                             
+      at dispatch (/home/framp/connect/node_modules/union/lib/routing-stream.js:110:21)                                     
+      at g (events.js:185:14)                                                                                               
+      at EventEmitter.emit (events.js:85:17)                                                                                
+      at RoutingStream.route (/home/framp/connect/node_modules/union/lib/routing-stream.js:114:23)                          
+      at Array.cookieParser [as 0] (/home/framp/connect/lib/middleware/cookieParser.js:60:5)                                
+      at dispatch (/home/framp/connect/node_modules/union/lib/routing-stream.js:110:21)                                     
+      at RoutingStream.route (/home/framp/connect/node_modules/union/lib/routing-stream.js:121:5)                           
+      at g (events.js:185:14)                                                                                               
+      at EventEmitter.emit (events.js:115:20)                                                                               
+      at IncomingMessage.Stream.pipe (stream.js:112:8)                                                                      
+      at Server.requestHandler (/home/framp/connect/node_modules/union/lib/core.js:50:9)                                    
+      at Server.EventEmitter.emit (events.js:91:17)                                                                         
+      at HTTPParser.parser.onIncoming (http.js:1793:12)                                                                     
+      at HTTPParser.parserOnHeadersComplete [as onHeadersComplete] (http.js:111:23)                                         
+      at Socket.socket.ondata (http.js:1690:22)                                                                             
+      at TCP.onread (net.js:402:27)                                                                                         
+
+  2) connect.static() when a trailing backslash is given should 500:
+     Error: Parse Error
+      at Socket.socketOnData (http.js:1366:20)                                                                              
+      at TCP.onread (net.js:402:27)                                                                                         
+
+  3) connect.static() when mounted should redirect relative to the originalUrl:
+     TypeError: Property '0' of object /static is not a function
+      at dispatch (/home/framp/connect/node_modules/union/lib/routing-stream.js:119:21)                                     
+      at RoutingStream.route (/home/framp/connect/node_modules/union/lib/routing-stream.js:121:5)                           
+      at g (events.js:185:14)                                                                                               
+      at EventEmitter.emit (events.js:115:20)                                                                               
+      at IncomingMessage.Stream.pipe (stream.js:112:8)                                                                      
+      at Server.requestHandler (/home/framp/connect/node_modules/union/lib/core.js:50:9)                                    
+      at Server.EventEmitter.emit (events.js:91:17)                                                                         
+      at HTTPParser.parser.onIncoming (http.js:1793:12)                                                                     
+      at HTTPParser.parserOnHeadersComplete [as onHeadersComplete] (http.js:111:23)                                         
+      at Socket.socket.ondata (http.js:1690:22)                                                                             
+      at TCP.onread (net.js:402:27)                                                                                         
+
+  4) connect.session() req.session .cookie when the pathname does not match cookie.path should not set-cookie:
+     TypeError: Cannot set property 'foo' of undefined
+      at Array.2 (/home/framp/connect/test/session.js:405:31)                                                               
+      at dispatch (/home/framp/connect/node_modules/union/lib/routing-stream.js:110:21)                                     
+      at g (events.js:185:14)                                                                                               
+      at EventEmitter.emit (events.js:85:17)                                                                                
+      at RoutingStream.route (/home/framp/connect/node_modules/union/lib/routing-stream.js:114:23)                          
+      at Array.session [as 1] (/home/framp/connect/lib/middleware/session.js:213:66)                                        
+      at dispatch (/home/framp/connect/node_modules/union/lib/routing-stream.js:110:21)                                     
+      at g (events.js:185:14)                                                                                               
+      at EventEmitter.emit (events.js:85:17)                                                                                
+      at RoutingStream.route (/home/framp/connect/node_modules/union/lib/routing-stream.js:114:23)                          
+      at Array.cookieParser [as 0] (/home/framp/connect/lib/middleware/cookieParser.js:60:5)                                
+      at dispatch (/home/framp/connect/node_modules/union/lib/routing-stream.js:110:21)                                     
+      at RoutingStream.route (/home/framp/connect/node_modules/union/lib/routing-stream.js:121:5)                           
+      at g (events.js:185:14)                                                                                               
+      at EventEmitter.emit (events.js:115:20)                                                                               
+      at IncomingMessage.Stream.pipe (stream.js:112:8)                                                                      
+      at Server.requestHandler (/home/framp/connect/node_modules/union/lib/core.js:50:9)                                    
+      at Server.EventEmitter.emit (events.js:91:17)                                                                         
+      at HTTPParser.parser.onIncoming (http.js:1793:12)                                                                     
+      at HTTPParser.parserOnHeadersComplete [as onHeadersComplete] (http.js:111:23)                                         
+      at Socket.socket.ondata (http.js:1690:22)                                                                             
+      at TCP.onread (net.js:402:27)                                                                                         
+
+  5) connect.static() on ENAMETOOLONG should next():
+     Error: timeout of 2000ms exceeded
+      at Object._onTimeout (/usr/lib/node_modules/mocha/lib/runnable.js:142:14)                                             
+      at Timer.list.ontimeout (timers.js:101:19)                                                                            
+
+  6) connect.static() on ENAMETOOLONG should next():
+     Error: timeout of 2000ms exceeded
+      at Object._onTimeout (/usr/lib/node_modules/mocha/lib/runnable.js:142:14)                                             
+      at Timer.list.ontimeout (timers.js:101:19)                                                                            
+
+  7) connect.timeout() when above the timeout with a partial response should do nothing:
+     Error: timeout of 2000ms exceeded
+      at Object._onTimeout (/usr/lib/node_modules/mocha/lib/runnable.js:142:14)                                             
+      at Timer.list.ontimeout (timers.js:101:19)                                                                            
+
+
+
+
+## Why union is better than connect?
+
+As a middleware, union is better than connect because:
+
+* It can deal with streams by default.
+* You can use events instead of passing around a callback, the event emitter provided allows a context associated with middleware rather than relying on adding things to req. This conceptual divide allows a focus on contextual business logic and separation of concerns (the in/out vs the evaluation of the in/out) makes it simpler to know if a field is something a middleware is providing
+
+## Compatibility testing
+
+* Clone the repository
+
+```bash
+git clone git://github.com/framp/connect-union
 ```
 
-## Middleware
+* Test compatibility
 
-  - csrf
-  - basicAuth
-  - bodyParser
-  - json
-  - multipart
-  - urlencoded
-  - cookieParser
-  - directory
-  - compress
-  - errorHandler
-  - favicon
-  - limit
-  - logger
-  - methodOverride
-  - query
-  - responseTime
-  - session
-  - static
-  - staticCache
-  - vhost
-  - subdomains
-  - cookieSession
-
-## Running Tests
-
-first:
-
-    $ npm install -d
-
-then:
-
-    $ make test
-
-## Authors
-
- Below is the output from [git-summary](http://github.com/visionmedia/git-extras).
-
-
-     project: connect
-     commits: 2033
-     active : 301 days
-     files  : 171
-     authors: 
-      1414	Tj Holowaychuk          69.6%
-       298	visionmedia             14.7%
-       191	Tim Caswell             9.4%
-        51	TJ Holowaychuk          2.5%
-        10	Ryan Olds               0.5%
-         8	Astro                   0.4%
-         5	Nathan Rajlich          0.2%
-         5	Jakub Nešetřil          0.2%
-         3	Daniel Dickison         0.1%
-         3	David Rio Deiros        0.1%
-         3	Alexander Simmerl       0.1%
-         3	Andreas Lind Petersen   0.1%
-         2	Aaron Heckmann          0.1%
-         2	Jacques Crocker         0.1%
-         2	Fabian Jakobs           0.1%
-         2	Brian J Brennan         0.1%
-         2	Adam Malcontenti-Wilson 0.1%
-         2	Glen Mailer             0.1%
-         2	James Campos            0.1%
-         1	Trent Mick              0.0%
-         1	Troy Kruthoff           0.0%
-         1	Wei Zhu                 0.0%
-         1	comerc                  0.0%
-         1	darobin                 0.0%
-         1	nateps                  0.0%
-         1	Marco Sanson            0.0%
-         1	Arthur Taylor           0.0%
-         1	Aseem Kishore           0.0%
-         1	Bart Teeuwisse          0.0%
-         1	Cameron Howey           0.0%
-         1	Chad Weider             0.0%
-         1	Craig Barnes            0.0%
-         1	Eran Hammer-Lahav       0.0%
-         1	Gregory McWhirter       0.0%
-         1	Guillermo Rauch         0.0%
-         1	Jae Kwon                0.0%
-         1	Jakub Nesetril          0.0%
-         1	Joshua Peek             0.0%
-         1	Jxck                    0.0%
-         1	AJ ONeal                0.0%
-         1	Michael Hemesath        0.0%
-         1	Morten Siebuhr          0.0%
-         1	Samori Gorse            0.0%
-         1	Tom Jensen              0.0%
-
-## Node Compatibility
-
-  Connect `< 1.x` is compatible with node 0.2.x
-
-
-  Connect `1.x` is compatible with node 0.4.x
-
-
-  Connect (_master_) `2.x` is compatible with node 0.6.x
-
-## CLA
-
- [http://sencha.com/cla](http://sencha.com/cla)
-
-## License
-
-View the [LICENSE](https://github.com/senchalabs/connect/blob/master/LICENSE) file. The [Silk](http://www.famfamfam.com/lab/icons/silk/) icons used by the `directory` middleware created by/copyright of [FAMFAMFAM](http://www.famfamfam.com/).
+```bash
+npm install
+make test
+```

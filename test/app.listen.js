@@ -1,5 +1,5 @@
 
-var connect = require('../');
+var connect = require('../union');
 
 describe('app.listen()', function(){
   it('should wrap in an http.Server', function(done){

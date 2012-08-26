@@ -1,5 +1,5 @@
 
-var connect = require('../');
+var connect = require('../union');
 
 describe('patch', function(){
   describe('"header" event', function(){

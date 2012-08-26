@@ -1,5 +1,5 @@
 
-var connect = require('../')
+var connect = require('../union')
   , should = require('./shared');
 
 var app = connect();

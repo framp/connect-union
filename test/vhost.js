@@ -1,5 +1,5 @@
 
-var connect = require('../')
+var connect = require('../union')
   , http = require('http');
 
 describe('connect.vhost()', function(){

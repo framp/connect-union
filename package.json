@@ -18,6 +18,7 @@
     "debug": "*"
   },
   "devDependencies": {
+	"union": "git://github.com/framp/union",
     "should": "*",
     "mocha": "*",
     "jade": "*",

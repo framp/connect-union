@@ -1,5 +1,5 @@
 
-var connect = require('../');
+var connect = require('../union');
 
 var fixtures = __dirname + '/fixtures';
 

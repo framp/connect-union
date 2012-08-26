@@ -24,8 +24,7 @@ function Request(app) {
   this.header = {};
   this.app = app;
   if (!this.server) {
-    this.server = http.Server(app);
-    this.server.listen(0, function(){
+    this.server = app.listen(0, function () {
       self.addr = self.server.address();
       self.listening = true;
     });
@@ -89,13 +88,7 @@ Request.prototype.end = function(fn){
       , host: this.addr.address
       , path: this.path
       , headers: this.header
-    });
-
-    this.data.forEach(function(chunk){
-      req.write(chunk);
-    });
-    
-    req.on('response', function(res){
+    }, function (res) {
       var buf = '';
       res.setEncoding('utf8');
       res.on('data', function(chunk){ buf += chunk });
@@ -103,6 +96,10 @@ Request.prototype.end = function(fn){
         res.body = buf;
         fn(res);
       });
+    });
+	
+	this.data.forEach(function(chunk){
+      req.write(chunk);
     });
 
     req.end();

@@ -1,5 +1,5 @@
 
-var connect = require('../');
+var connect = require('../union');
 
 describe('exports', function(){
   describe('.version', function(){

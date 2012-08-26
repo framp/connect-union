@@ -1,5 +1,5 @@
 
-var connect = require('../');
+var connect = require('../union');
 
 function test(app, signature) {
   describe(signature, function(){
